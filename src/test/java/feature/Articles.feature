@@ -18,4 +18,4 @@
       Then status 201
       And match response.article.title == 'Article title karate kiddd'
 
-      
+    Scenario:
