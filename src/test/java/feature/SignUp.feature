@@ -5,7 +5,9 @@
       Given url apiUrl
 
       Scenario: New user Sing Up
+        Given def userData = {"email":"KarateUser14@test.com","username":"KarateUser1238"}
+
         Given path 'users'
-        And request {"user":{"email":"KarateUser11@test.com","password":"123Karate","username":"KarateUser123"}}
+        And request {"user":{"email": #('userData.email),"password":"1238Karate","username":#('userData.username)}}
         When method Post
-        Then status 200
+        Then status 201
