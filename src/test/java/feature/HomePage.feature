@@ -12,7 +12,6 @@ Feature: Tests for the home page
     And match response.tags == "#array"
     And match each response.tags == "#string"
 
-
   Scenario: Get 10 articles from the page
       Given params { limit: 10, offset: 0}
       Given path 'articles'

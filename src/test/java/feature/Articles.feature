@@ -3,19 +3,34 @@
   Feature: Articles
 
     Background: Define URL
-      Given url 'https://conduit-api.bondaracademy.com/api/'
-      Given path 'users/login'
-      And request { "user": { "email": "karate10@test.com", "password": "1234karate" }}
-      When method Post
-      Then status 200
-      * def token = response.user.token
+      Given url apiUrl
 
     Scenario: Create a new article
-      Given header Authorization = 'Token ' + token
       Given path 'articles'
       And request {"article":{"title":"Article title karate kiddd","description":"bla bla bla 7","body":"body karate 6","tagList":[]}}
       When method Post
       Then status 201
       And match response.article.title == 'Article title karate kiddd'
 
-    Scenario:
+    Scenario: Create and delete article
+      Given path 'articles'
+      And request {"article":{"title":"Delete article","description":"bla bla bla 7","body":"body karate 6","tagList":[]}}
+      When method Post
+      Then status 201
+      * def articleId = response.article.slug
+
+      Given params { limit: 10, offset: 0}
+      Given path 'articles'
+      When method Get
+      Then status 200
+      #And match response.articles[0].title == 'Delete article'
+
+      Given path 'articles',articleId
+      When method Delete
+      Then status 204
+
+      Given params { limit: 10, offset: 0}
+      Given path 'articles'
+      When method Get
+      Then status 200
+      And match response.articles[0].title != 'Delete article'
